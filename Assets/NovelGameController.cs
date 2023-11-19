@@ -30,14 +30,17 @@ namespace Glib.NovelGameEditor
 
         private void Update()
         {
-            _current.OnUpdate();
+            if (_current != null)
+            {
+                _current.OnUpdate();
+            }
         }
 
         public void MoveTo(Node node)
         {
             _current.OnExit();
             _current = node;
-            _current.OnEnter();
+            if (_current != null) _current.OnEnter();
         }
     }
 }

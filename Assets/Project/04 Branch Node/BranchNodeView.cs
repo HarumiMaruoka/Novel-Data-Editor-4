@@ -2,6 +2,7 @@
 using System;
 using UnityEngine.UIElements;
 using UnityEditor.Experimental.GraphView;
+using System.Collections.Generic;
 
 namespace Glib.NovelGameEditor
 {
@@ -26,7 +27,9 @@ namespace Glib.NovelGameEditor
             }
         }
 
-        public event Action<Node> OnElementSelected;
+        private List<BranchElementView> _branchElementViews = new List<BranchElementView>();
+
+        public event Action<NodeView, Node> OnElementSelected;
 
         private BranchNode _node;
         private VisualElement _elementsContainer;
@@ -44,12 +47,13 @@ namespace Glib.NovelGameEditor
 
         private void ElementSelected(Node node)
         {
-            OnElementSelected?.Invoke(node);
+            OnElementSelected?.Invoke(this, node);
         }
 
         public BranchElementView CreateElementView(BranchElement element)
         {
             var elemView = new BranchElementView(element);
+            _branchElementViews.Add(elemView);
             _elementsContainer.Add(elemView);
             elemView.OnClickedRemoveButton += DeleteElementView;
             return elemView;
@@ -59,6 +63,14 @@ namespace Glib.NovelGameEditor
         {
             _node.DeleteElement(elementView.Node);
             _elementsContainer.Remove(elementView);
+        }
+
+        public void DeleteElements()
+        {
+            foreach (var elemView in _branchElementViews)
+            {
+                DeleteElementView(elemView);
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 // 日本語対応
 using System.Collections.Generic;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace Glib.NovelGameEditor
 {
@@ -10,6 +11,9 @@ namespace Glib.NovelGameEditor
         private Node _child = null;
         [SerializeField]
         private List<Node> _parents = new List<Node>();
+
+        [SerializeField]
+        private NovelAnimationController _novelAnimation;
 
         public Node Node => this;
         public Node Child { get => _child; set => _child = value; }
@@ -35,18 +39,16 @@ namespace Glib.NovelGameEditor
             _child = null;
         }
 
-        public override void OnEnter()
+        public override async void OnEnter()
         {
             Debug.Log("enter");
+            await _novelAnimation.PlayAnimation(default);
+            _controller.MoveTo(_child);
         }
 
         public override void OnUpdate()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                if (_child != null)
-                    _controller.MoveTo(_child);
-            }
+
         }
 
         public override void OnExit()

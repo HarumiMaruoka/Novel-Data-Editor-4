@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Glib.NovelGameEditor
 {
@@ -6,10 +7,13 @@ namespace Glib.NovelGameEditor
     {
         [SerializeField]
         private NodeViewData _viewData;
+        [SerializeField]
+        private string _nodeName;
 
         protected NovelGameController _controller;
 
         public NodeViewData ViewData => _viewData ??= new NodeViewData();
+        public string NodeName => _nodeName;
 
         public void Initialize(NovelGameController controller)
         {

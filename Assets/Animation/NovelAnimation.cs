@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Glib.NovelGameEditor
 {
-    public abstract class NovelAnimator : MonoBehaviour
+    public abstract class NovelAnimation : MonoBehaviour
     {
         public abstract UniTask PlayAnimationAsync(NovelAnimationData animationData, CancellationToken token);
     }

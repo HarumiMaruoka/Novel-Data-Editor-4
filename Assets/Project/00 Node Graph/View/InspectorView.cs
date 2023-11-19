@@ -10,17 +10,20 @@ namespace Glib.NovelGameEditor
 
         private Editor _editor;
 
-        public void ShowNodeInfomation(Node node)
+        public void ShowNodeInfomation(NodeView nodeView, Node node)
         {
             Clear();
             UnityEngine.Object.DestroyImmediate(_editor);
+            if (!node) return;
             _editor = Editor.CreateEditor(node);
 
             IMGUIContainer container = new IMGUIContainer(() =>
             {
                 _editor.OnInspectorGUI();
+                nodeView.ApplyNodeName(node);
             });
             Add(container);
+
         }
     }
 }

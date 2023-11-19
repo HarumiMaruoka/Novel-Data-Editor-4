@@ -41,12 +41,13 @@ namespace Glib.NovelGameEditor
                 return;
             }
 
+            _inspectorView.ShowNodeInfomation(null, null);
             _nodeGraphView.PopulateView(null);
         }
 
-        public void OnNodeSelected(Node node)
+        public void OnNodeSelected(NodeView nodeView, Node node)
         {
-            _inspectorView.ShowNodeInfomation(node);
+            _inspectorView.ShowNodeInfomation(nodeView, node);
         }
     }
 }

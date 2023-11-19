@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Glib.NovelGameEditor
 {
@@ -16,7 +17,7 @@ namespace Glib.NovelGameEditor
         public Port Input => _input;
         public Port Output => _output;
 
-        public event Action<Node> OnNodeSelected;
+        public event Action<NodeView, Node> OnNodeSelected;
 
         public NodeView(Node node)
         {
@@ -32,6 +33,8 @@ namespace Glib.NovelGameEditor
         {
             _node = node;
             this.viewDataKey = node.ViewData.GUID;
+
+            ApplyNodeName(node);
 
             style.left = node.ViewData.Position.x;
             style.top = node.ViewData.Position.y;
@@ -74,6 +77,22 @@ namespace Glib.NovelGameEditor
             }
         }
 
+        public void ApplyNodeName(Node node)
+        {
+            var nodeName = this.Q<Label>("node-name");
+            if (nodeName != null)
+            {
+                if (string.IsNullOrEmpty(node.NodeName))
+                {
+                    nodeName.text = "Node name";
+                }
+                else
+                {
+                    nodeName.text = node.NodeName;
+                }
+            }
+        }
+
         public override void SetPosition(Rect newPos)
         {
             base.SetPosition(newPos);
@@ -83,7 +102,7 @@ namespace Glib.NovelGameEditor
         public override void OnSelected()
         {
             base.OnSelected();
-            OnNodeSelected?.Invoke(_node);
+            OnNodeSelected?.Invoke(this, _node);
         }
 
         protected Port CreatePort(Orientation orientation, Direction direction, Port.Capacity capacity)

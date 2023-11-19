@@ -1,4 +1,5 @@
 // 日本語対応
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 

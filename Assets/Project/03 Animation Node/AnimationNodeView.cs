@@ -6,7 +6,7 @@ namespace Glib.NovelGameEditor
 {
     public class AnimationNodeView : NodeView, IInputNodeView, IOutputNodeView
     {
-        public AnimationNodeView(AnimationNode node) : base(node)
+        public AnimationNodeView(AnimationNode node) : base(node, "Assets/Project/03 Animation Node/uxml/AnimationNodeView.uxml")
         {
             _node = node;
             title = "Animation Node";

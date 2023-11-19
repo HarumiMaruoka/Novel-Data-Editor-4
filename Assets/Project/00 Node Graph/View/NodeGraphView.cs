@@ -61,7 +61,6 @@ namespace Glib.NovelGameEditor
             if (_nodeGraph.RootNode == null) // ルートノードが無ければ作成する。
             {
                 _nodeGraph.RootNode = _nodeGraph.CreateNode(typeof(RootNode)) as RootNode;
-                EditorUtility.SetDirty(_nodeGraph);
                 AssetDatabase.SaveAssets();
             }
 
@@ -248,6 +247,11 @@ namespace Glib.NovelGameEditor
                 NodeView nodeView = elem as NodeView;
                 if (nodeView != null)
                 {
+                    var branchNodeView = nodeView as BranchNodeView;
+                    if (branchNodeView != null)
+                    {
+                        branchNodeView.DeleteElements();
+                    }
                     _nodeGraph.DeleteNode(nodeView.Node);
                 }
 
@@ -266,11 +270,11 @@ namespace Glib.NovelGameEditor
             endPort.node != startPort.node).ToList();
         }
 
-        public event Action<Glib.NovelGameEditor.Node> OnNodeSelectedEvent;
+        public event Action<NodeView, Glib.NovelGameEditor.Node> OnNodeSelectedEvent;
 
-        public void OnNodeSelected(Glib.NovelGameEditor.Node node)
+        public void OnNodeSelected(NodeView nodeView, Glib.NovelGameEditor.Node node)
         {
-            OnNodeSelectedEvent(node);
+            OnNodeSelectedEvent(nodeView, node);
         }
     }
 }

@@ -1,21 +1,30 @@
 using Cysharp.Threading.Tasks;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
 namespace Glib.NovelGameEditor
 {
+    [Serializable]
     public class NovelAnimationController
     {
-        public async UniTask<bool> PlayAnimation(IEnumerable<NovelAnimator> animations, NovelAnimationData controlData, CancellationToken token)
+        [SerializeField]
+        private NovelAnimation[] _animations;
+
+        public async UniTask<bool> PlayAnimation(NovelAnimationData controlData, CancellationToken token = default)
         {
-            List<UniTask> animationTasks = new List<UniTask>();
+            if (_animations == null || _animations.Length == 0)
+            {
+                Debug.Log("animation is none");
+                return false;
+            }
+
+            UniTask[] animationTasks = new UniTask[_animations.Length];
 
             // アニメーションを並列再生
-            foreach (var anim in animations)
+            for (int i = 0; i < _animations.Length; i++)
             {
-                animationTasks.Add(anim.PlayAnimationAsync(controlData, token));
+                animationTasks[i] = _animations[i].PlayAnimationAsync(controlData, token);
             }
 
             // 全てのアニメーションが正常に終了するか、キャンセルされるまで待機
